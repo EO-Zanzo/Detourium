@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Detourium</id>
+    <version>0.2.0</version>
+    <title>Detourium</title>
+    <authors>Atilla Lonny</authors>
+    <licenseUrl>https://github.com/atillabyte/Detourium/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/atillabyte/Detourium/</projectUrl>
+    <iconUrl>https://i.imgur.com/VWGRV9i.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library to assist with detours using the .NET CLR in (un-)managed processes.</description>
+    <releaseNotes>The first beta version of Detourium.</releaseNotes>
+    <tags>Detourium Detour Detours Hook Hooking WPE </tags>
+  </metadata>
+</package>

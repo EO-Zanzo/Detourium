@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Detourium.Plugins</name>
+    </assembly>
+    <members>
+        <member name="T:Detourium.Detours.Network.InterceptResponse">
+            <summary>
+            The response indicating whether to filter the packet and, if so, with the buffer provided.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.InterceptResponse.Filter">
+            <summary>
+            Boolean indicating whether the packet will be filtered.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.InterceptResponse.Buffer">
+            <summary>
+            The content of the filtered packet.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detours.Network.InterceptResponse.#ctor(System.Boolean,System.Byte[])">
+            <summary>
+            The response indicating whether to filter the packet and, if so, with the buffer provided.
+            </summary>
+            <param name="filter"> Boolean indicating whether the packet will be filtered. </param>
+            <param name="buffer"> The new content of the packet, if the packet is being filtered. </param>
+        </member>
+        <member name="T:Detourium.Detours.Network.InterceptCallback">
+            <summary>
+            <para>
+            When a packet is sent or received, this callback will be executed containing the packet.
+            </para>
+            <para>
+            <see cref="T:Detourium.Detours.Network.InterceptResponse"/> is expected to be returned specifying whether or not the
+            packet is to be filtered, and if so, the buffer to replace the packet contents with.
+            </para>
+            </summary>
+            <param name="packet"> The packet being sent or received. </param>
+        </member>
+        <member name="T:Detourium.Detours.Network.Packet">
+            <summary>
+            The packet being sent or received from a channel.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.Packet.Channel">
+            <summary>
+            The channel in which the packet was sent or received.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.Packet.Source">
+            <summary>
+            The IPEndPoint the packet originated from.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.Packet.Destination">
+            <summary>
+            The IPEndPoint the packet is being sent to.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.Packet.Buffer">
+            <summary>
+             The content of the packet.
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.Packet.Length">
+            <summary>
+            The length of the buffer.
+            (note: not the length of the packet) <see cref="P:Detourium.Detours.Network.Packet.Buffer"/>
+            </summary>
+        </member>
+        <member name="P:Detourium.Detours.Network.Packet.Socket">
+            <summary>
+            The ID of the socket.
+            </summary>
+        </member>
+        <member name="T:Detourium.Detours.Network.PacketChannel">
+            <summary>
+            The currently supported WS2_32 derived methods
+            </summary>
+        </member>
+        <member name="T:Detourium.Detours.Network.NetworkDetour">
+            <summary>
+            A built-in detour handler for WINSOCK networking.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detours.Network.NetworkDetour.Install(Detourium.Detours.Network.PacketChannel,Detourium.Detours.Network.InterceptCallback)">
+            <summary>
+            NOTE: You can currently only filter the packets for SEND and RECV channels.
+            </summary>
+            <param name="channels"> By default, all channels are selected. </param>
+            <param name="interceptCallback"> The packets intercepted will be received here for logging, and filtering if necessary. </param>
+        </member>
+        <member name="M:Detourium.Detours.Network.NetworkDetour.Dispose">
+            <summary>
+            Uninstall the network detours.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detours.Network.NetworkDetour.Send(System.Int32,System.Byte[])">
+            <summary>
+            A method to call WS2_32 send() with the packet specified.
+            </summary>
+            <param name="socket"> Socket ID </param>
+            <param name="buffer"> Packet content </param>
+        </member>
+        <member name="M:Detourium.Detours.Network.NetworkDetour.GetStringToBytes(System.String)">
+            <summary>
+            Convert a hexadecimal string to bytes.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detours.Network.NetworkDetour.GetBytesToString(System.Byte[])">
+            <summary>
+            Convert bytes to a hexadecimal string.
+            </summary>
+        </member>
+        <member name="T:Detourium.Detours.Network.NetworkDetourExtensions">
+            <summary>
+            A class for extending the functionality of the built-in networking detour.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detours.Network.NetworkDetourExtensions.GetHostName(System.Net.IPEndPoint)">
+            <summary>
+            Retrieve the host name entry from DNS for the specified endpoint.
+            </summary>
+            <returns> The host name entry from DNS for the specified endpoint. </returns>
+        </member>
+        <member name="T:Detourium.DetouriumPlugin">
+            <summary>
+            A plugin to be loaded in the specified process.
+            </summary>
+        </member>
+        <member name="P:Detourium.DetouriumPlugin.PluginName">
+            <summary>
+            The unique identifying name of the plugin.
+            <para> The name specified must be alphanumeric with no spaces, and up to 80 characters in length. </para>
+            </summary>
+        </member>
+        <member name="P:Detourium.DetouriumPlugin.PluginVersion">
+            <summary>
+            The version of the plugin.
+            </summary>
+        </member>
+        <member name="P:Detourium.DetouriumPlugin.Configuration">
+            <summary>
+            Configuration for the plugin.
+            </summary>
+        </member>
+        <member name="M:Detourium.DetouriumPlugin.Install(System.Int32)">
+            <summary>
+            Installs the plugin into the matching process.
+            </summary>
+            <param name="processId"> The ID of the process of which to inject. </param>
+        </member>
+        <member name="M:Detourium.DetouriumPlugin.Install(System.String)">
+            <summary>
+            Installs the plugin into the matching process.
+            </summary>
+            <param name="processName"> The name of the process of which to inject. </param>
+        </member>
+        <member name="M:Detourium.DetouriumPlugin.Install(System.Diagnostics.ProcessStartInfo,System.Boolean)">
+            <summary>
+            Installs the plugin into the process started.
+            </summary>
+            <param name="startInfo"> The parameters to start the process with. </param>
+            <param name="useExistingProcess">
+            If the process is already running, use the existing process instead of instantiating a new one.
+            </param>
+        </member>
+        <member name="M:Detourium.DetouriumPlugin.OnUninstall">
+            <summary>
+            Whenever a plugin is being uninstalled.
+            <para>
+            (note: remember to uninstall any detours you have installed.)
+            </para>
+            </summary>
+        </member>
+        <member name="M:Detourium.DetouriumPlugin.OnInstalled">
+            <summary>
+            Whenever a plugin is being installed.
+            </summary>
+        </member>
+        <member name="T:Detourium.PluginConfiguration">
+            <summary>
+            Optional additional configuration for Detourium plugins.
+            </summary>
+        </member>
+        <member name="F:Detourium.PluginConfiguration.EnforceVersionPriority">
+            <summary>
+            Ensure only higher versions of the plugin will be loaded.
+            </summary>
+        </member>
+        <member name="F:Detourium.PluginConfiguration.DisplayConsole">
+            <summary>
+            Allocate a console attached to the process displaying debugging information.
+            </summary>
+        </member>
+        <member name="T:Detourium.Detour">
+            <summary>
+            A class for assisting with installing and managing detours.
+            </summary>
+        </member>
+        <member name="F:Detourium.Detour.SuccessfullyInstalled">
+            <summary>
+            Indicates whether the detour has been successfully installed.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detour.Install(System.String,System.String,System.Delegate)">
+            <summary>
+            Install the specified detour in the running process.
+            </summary>
+            <param name="moduleName"> The name of the module to hook. </param>
+            <param name="procName"> The name of the procedure to hook. </param>
+            <param name="callback"> The callback for the hook. </param>
+            <returns></returns>
+        </member>
+        <member name="M:Detourium.Detour.Suspend">
+            <summary>
+            Suspend the detour by restoring the JMP instruction to the original address.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detour.Continue">
+            <summary>
+            Continue the detour by changing the JMP instruction to the new address.
+            </summary>
+        </member>
+        <member name="M:Detourium.Detour.Uninstall">
+            <summary>
+            Uninstall the detour by restoring the the JMP instruction to the original address.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Detourium.ErrorCode.Unspecified">
+            <summary>
+            No matching error code was found.
+            </summary>
+        </member>
+        <member name="F:Detourium.ErrorCode.InvalidPluginName">
+            <summary>
+            The plugin name must be compliant with the restrictions provided.
+            <para>
+            The plugin name must be unique; alphanumeric characters; no spaces, and up to 80 characters in length.
+            </para>
+            </summary>
+        </member>
+        <member name="F:Detourium.ErrorCode.MissingProperty">
+            <summary>
+            The plugin is missing a required property.
+            </summary>
+        </member>
+        <member name="F:Detourium.ErrorCode.ProcessNotFound">
+            <summary>
+            The process was not running at the time during DLL injection.
+            </summary>
+        </member>
+        <member name="F:Detourium.ErrorCode.InvalidModuleName">
+            <summary>
+            The module name speified during install is invalid.
+            </summary>
+        </member>
+        <member name="F:Detourium.ErrorCode.InvalidProcName">
+            <summary>
+            The procedure name specified during install is invalid.
+            </summary>
+        </member>
+        <member name="F:Detourium.ErrorCode.VirtualProtectFailed">
+            <summary>
+            The virtual protection was unable to be modified during install.
+            </summary>
+        </member>
+        <member name="P:Detourium.DetouriumPluginException.ErrorCode">
+            <summary>
+            The specific error type of the exception.
+            </summary>
+        </member>
+        <member name="M:RuntimeInstaller.ProcessHelpers.IsWow64Process(System.Int32)">
+            <summary>
+            Check whether the process specified is 32-bit or 64-bit.
+            </summary>
+            <returns> If true, the process is 32-bit, otherwise 64-bit. </returns>
+        </member>
+        <member name="M:RuntimeInstaller.ProcessHelpers.GetPlatform(System.Int32)">
+            <summary>
+            Check the platform of the process specified.
+            </summary>
+            <param name="id"> Process Id </param>
+            <returns> x86 or x64 </returns>
+        </member>
+    </members>
+</doc>
