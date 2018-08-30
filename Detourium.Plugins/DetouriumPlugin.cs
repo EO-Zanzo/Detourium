@@ -32,7 +32,7 @@ namespace Detourium
         /// </summary>
         public virtual PluginConfiguration Configuration { get; set; }
             = new PluginConfiguration();
-
+        
         /// <summary>
         /// Installs the plugin into the matching process.
         /// </summary>

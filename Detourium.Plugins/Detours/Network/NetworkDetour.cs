@@ -325,8 +325,8 @@ namespace Detourium.Detours.Network
         internal static int repl_wsa_send(IntPtr socket, ref WSABuffer wsaBuffer, int bufferCount, out int bytesTransferred, ref int socketFlags, IntPtr overlapped, IntPtr completionRoutine)
         {
             WSASendHook.Suspend();
-
-            var length = WSASend(socket, ref wsaBuffer, bufferCount, out bytesTransferred, socketFlags, overlapped, completionRoutine);
+            
+            var length = WSASend(socket, ref wsaBuffer, bufferCount, out bytesTransferred, ref socketFlags, overlapped, completionRoutine);
             var buffer = wsaBuffer.Pointer.Copy(0, wsaBuffer.Length);
 
             var packet = new Packet() {
@@ -334,7 +334,7 @@ namespace Detourium.Detours.Network
                 Buffer = buffer,
                 Source = socket.GetSourceIPEndPoint(),
                 Destination = socket.GetDestinationIPEndPoint(),
-                Length = length,
+                Length = buffer.Length,
                 Socket = (int)socket
             };
 
@@ -390,7 +390,7 @@ namespace Detourium.Detours.Network
         internal static ReceiveFromCallback callback_repl_recv_from = new ReceiveFromCallback(repl_recv_from);
 
         [DllImport("WS2_32.dll", SetLastError = true)]
-        internal static extern int WSASend(IntPtr socketHandle, ref WSABuffer buffer, int bufferCount, out int bytesTransferred, int socketFlags, IntPtr overlapped, IntPtr completionRoutine);
+        internal static extern int WSASend(IntPtr socketHandle, ref WSABuffer buffer, int bufferCount, out int bytesTransferred, ref int socketFlags, IntPtr overlapped, IntPtr completionRoutine);
         internal delegate int WSASendCallback(IntPtr socketHandle, ref WSABuffer buffer, int bufferCount, out int bytesTransferred, ref int socketFlags, IntPtr overlapped, IntPtr completionRoutine);
         internal static WSASendCallback callback_repl_wsa_send = new WSASendCallback(repl_wsa_send);
 
