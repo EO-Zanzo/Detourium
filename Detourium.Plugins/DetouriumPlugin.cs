@@ -126,6 +126,11 @@ namespace Detourium
         /// Allocate a console attached to the process displaying debugging information.
         /// </summary>
         public bool DisplayConsole = true;
+
+        /// <summary>
+        /// If set to false, the plugin will not be installed.
+        /// </summary>
+        public bool PluginEnabled = true;
     }
 
     /// <summary>

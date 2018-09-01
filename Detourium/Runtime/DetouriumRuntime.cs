@@ -81,32 +81,42 @@ namespace Detourium.Runtime
 
                     if (!(plugins.Any()))
                     {
-                        ConsoleLogger.LogWarning($"[Runtime] An attempt to load a plugin failed as the assembly did not contain any {nameof(DetouriumPlugin)} interface.");
+                        ConsoleLogger.LogWarning(Globalization<DetouriumPlugin>.PluginInterfaceNotFound());
                     }
 
                     foreach (var plugin in plugins)
                     {
                         try
                         {
+                            if (!plugin.Configuration.PluginEnabled)
+                            {
+                                ConsoleLogger.LogWarning(Globalization<DetouriumPlugin>.PluginDisabledMessage(plugin));
+                                continue;
+                            }
+
                             var duplicate = PluginsLoaded.Find(p => p.PluginName == plugin.PluginName);
 
                             if (duplicate != null)
                             {
+                                if (!duplicate.Configuration.PluginEnabled)
+                                {
+                                    ConsoleLogger.LogWarning(Globalization<DetouriumPlugin>.PluginDisabledMessage(duplicate));
+                                    continue;
+                                }
+
                                 if (duplicate.Configuration.EnforceVersionPriority && plugin.PluginVersion < duplicate.PluginVersion)
                                 {
-                                    ConsoleLogger.LogWarning($"[Runtime] Plugin '{ plugin.PluginName } v{ plugin.PluginVersion }' is lower than the current version loaded (v{ plugin.PluginVersion }). " +
-                                        $"The specified plugin will be skipped and not loaded as a result. You can disable this functionality in the configuration for the specified plugin.");
+                                    ConsoleLogger.LogWarning(Globalization<DetouriumPlugin>.PluginVersionPriorityMessage(plugin, duplicate));
 
                                     continue;
                                 }
                                 
-                                ConsoleLogger.LogDebug($"[Runtime] Plugin '{ duplicate.PluginName } v{ duplicate.PluginVersion }' " +
-                                                       $"{ (duplicate.OnUninstall() ? "gracefully" : "forcibly") } unloaded.");
+                                ConsoleLogger.LogDebug(Globalization<DetouriumPlugin>.PluginUnloadedMessage(duplicate));
 
                                 PluginsLoaded.Remove(duplicate);
                             }
 
-                            ConsoleLogger.LogDebug($"[Runtime] Plugin '{ plugin.PluginName } v{ plugin.PluginVersion }' successfully loaded.");
+                            ConsoleLogger.LogDebug(Globalization<DetouriumPlugin>.PluginLoadedMessage(plugin));
 
                             if (PluginsLoaded.Count == 0 && !plugin.Configuration.DisplayConsole)
                                 NativeMethods.FreeConsole();
